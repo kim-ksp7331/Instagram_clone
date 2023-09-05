@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import wanted.structure.Instagram_clone.api.auth.dto.request.EmailRequest;
+import wanted.structure.Instagram_clone.api.auth.dto.request.SignUpRequest;
+import wanted.structure.Instagram_clone.api.auth.service.AuthService;
 import wanted.structure.Instagram_clone.api.auth.service.EmailService;
 import wanted.structure.Instagram_clone.global.dto.EmptyResult;
 import wanted.structure.Instagram_clone.global.dto.ResponseDto;
@@ -22,11 +24,18 @@ public class AuthController {
 
     private final EmailService emailService;
 
+    private final AuthService authService;
+
     @PostMapping("/mail")
     public ResponseEntity<EmptyResult> mail(@RequestBody EmailRequest emailRequest) {
         emailService.sendMail(emailRequest, "email");
         return ResponseDto.of(HttpStatus.OK, HttpStatus.OK.getReasonPhrase());
+    }
 
+    @PostMapping("/signup")
+    public ResponseEntity<EmptyResult> signUp(@RequestBody SignUpRequest signUpRequest) {
+        authService.signUp(signUpRequest);
+        return ResponseDto.of(HttpStatus.OK, HttpStatus.OK.getReasonPhrase());
     }
 
 }
