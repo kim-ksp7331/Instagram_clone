@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 import wanted.structure.Instagram_clone.api.auth.dto.EmailMessage;
@@ -25,6 +26,7 @@ public class EmailService {
 
     private final EmailMapper emailMapper;
 
+    @Transactional
     public String sendMail(EmailRequest emailRequest, String type) {
         String authNum = createCode();
 

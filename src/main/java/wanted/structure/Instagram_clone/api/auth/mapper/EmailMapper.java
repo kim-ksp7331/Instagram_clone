@@ -10,7 +10,7 @@ public class EmailMapper {
     public EmailMessage dtoToVo(EmailRequest dto) {
         return EmailMessage.builder()
             .to(dto.getEmail())
-            .subject("임시 비밀번호 발급")
+            .subject("이메일 인증")
             .build();
     }
 }
