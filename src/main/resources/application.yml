@@ -13,3 +13,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
+
+jwt:
+  secret: structure-Instagram-clone-123!structure-Instagram-clone-123!structure-Instagram-clone-123!structure-Instagram-clone-123!structure-Instagram-clone-123!structure-Instagram-clone-123!
