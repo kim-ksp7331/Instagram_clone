@@ -2,19 +2,22 @@ package wanted.structure.Instagram_clone.api.auth.service;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import java.util.Date;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 import wanted.structure.Instagram_clone.api.auth.dto.EmailMessage;
 import wanted.structure.Instagram_clone.api.auth.dto.request.EmailRequest;
 import wanted.structure.Instagram_clone.api.auth.mapper.EmailMapper;
+import wanted.structure.Instagram_clone.global.code.RedisCode;
+import wanted.structure.Instagram_clone.global.utils.RedisUtils;
 
 @Slf4j
 @Service
@@ -26,8 +29,12 @@ public class EmailService {
 
     private final EmailMapper emailMapper;
 
-    @Transactional
-    public String sendMail(EmailRequest emailRequest, String type) {
+    private final RedisUtils redisUtils;
+
+    private final long expire_period = 1000L * 60L * 30; // 30분
+
+    @Async
+    public void sendMail(EmailRequest emailRequest, String type) {
         String authNum = createCode();
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -43,8 +50,8 @@ public class EmailService {
 
             log.info("code : {}, message : {}", HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase());
 
-            return authNum;
-
+            Date now = new Date();
+            redisUtils.setDataExpire(RedisCode.AUTH_NUM.getCode() + emailMessage.getTo(), authNum, expire_period);
         } catch (MessagingException e) {
             log.error(e.getMessage());
             log.info("code : {}, message : {}", HttpStatus.INTERNAL_SERVER_ERROR.value(),
