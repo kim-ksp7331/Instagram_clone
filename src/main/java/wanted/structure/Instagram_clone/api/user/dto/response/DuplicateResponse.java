@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class CheckEmailResponse {
-    boolean exists;
+public class DuplicateResponse {
+    boolean duplicate;
 }

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import wanted.structure.Instagram_clone.api.user.dto.response.CheckEmailResponse;
+import wanted.structure.Instagram_clone.api.user.dto.response.DuplicateResponse;
 import wanted.structure.Instagram_clone.api.user.service.UserService;
 import wanted.structure.Instagram_clone.global.dto.ResponseDto;
 import wanted.structure.Instagram_clone.global.dto.SingleResult;
@@ -23,7 +23,13 @@ public class UserController {
 
     @GetMapping("/email/exists")
     public ResponseEntity<SingleResult> checkEmailDuplicate(@RequestParam String email) {
-        CheckEmailResponse response = userService.checkEmailDuplicate(email);
+        DuplicateResponse response = userService.checkEmailDuplicate(email);
+        return ResponseDto.of(HttpStatus.OK, response);
+    }
+
+    @GetMapping("/nickname/exists")
+    public ResponseEntity<SingleResult> checkNicknameDuplicate(@RequestParam String nickname) {
+        DuplicateResponse response = userService.checkNicknameDuplicate(nickname);
         return ResponseDto.of(HttpStatus.OK, response);
     }
 }
