@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 import wanted.structure.Instagram_clone.api.auth.dto.request.SignUpRequest;
 import wanted.structure.Instagram_clone.api.auth.mapper.AuthMapper;
 import wanted.structure.Instagram_clone.api.auth.repository.AuthRepository;
-import wanted.structure.Instagram_clone.api.user.entity.User;
 import wanted.structure.Instagram_clone.api.user.mapper.UserMapper;
 import wanted.structure.Instagram_clone.api.user.repository.UserRepository;
 import wanted.structure.Instagram_clone.global.code.AuthCode;
@@ -29,14 +28,12 @@ public class AuthService {
 
     @Transactional
     public void signUp(SignUpRequest request) {
-        userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new ApiException(ErrorCode.CONFLICT));
-        userRepository.save(userMapper.dtoToEntity(request));
-        User user = userRepository.findByEmail(request.getEmail()).orElseThrow();
-        try{
-            authRepository.findAuthByUserId(user.getId());
-        }catch (Exception e){
-            authRepository.save(authMapper.dtoToEntity(user.getId(), AuthCode.USER));
+        boolean exists = userRepository.existsByEmail(request.getEmail());
+        if (exists) {
+            throw new ApiException(ErrorCode.CONFLICT);
         }
+        Long userId = userRepository.save(userMapper.dtoToEntity(request)).getId();
+        authRepository.save(authMapper.dtoToEntity(userId, AuthCode.USER));
     }
 
 }

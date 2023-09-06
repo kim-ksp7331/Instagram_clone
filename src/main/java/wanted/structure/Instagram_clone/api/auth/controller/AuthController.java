@@ -1,6 +1,7 @@
 package wanted.structure.Instagram_clone.api.auth.controller;
 
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,14 +27,14 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping("/mail")
-    public ResponseEntity<EmptyResult> mail(@RequestBody EmailRequest emailRequest) {
+    @PostMapping("/send-mail")
+    public ResponseEntity<EmptyResult> sendMail(@RequestBody @Valid EmailRequest emailRequest) {
         emailService.sendMail(emailRequest, "email");
         return ResponseDto.of(HttpStatus.OK, HttpStatus.OK.getReasonPhrase());
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<EmptyResult> signUp(@RequestBody SignUpRequest signUpRequest) {
+    @PostMapping("/sign-up")
+    public ResponseEntity<EmptyResult> signUp(@RequestBody @Valid SignUpRequest signUpRequest) {
         authService.signUp(signUpRequest);
         return ResponseDto.of(HttpStatus.OK, HttpStatus.OK.getReasonPhrase());
     }
