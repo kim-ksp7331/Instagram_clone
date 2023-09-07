@@ -6,7 +6,9 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum ErrorCode {
 
-    BAD_REQUEST(HttpStatus.BAD_REQUEST, "옳바른 요청이 아닙니다.");
+    BAD_REQUEST(HttpStatus.BAD_REQUEST, "옳바른 요청이 아닙니다."),
+
+    CONFLICT(HttpStatus.CONFLICT,"요청이 현재 서버의 상태와 충돌합니다.");
 
     private final HttpStatus httpStatus;
     private final String message;
