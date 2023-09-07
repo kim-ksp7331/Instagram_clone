@@ -1,5 +1,8 @@
 package wanted.structure.Instagram_clone.global.dto;
 
+import lombok.Getter;
+
+@Getter
 public class SingleResult extends EmptyResult {
     private final Object content;
 

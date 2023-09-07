@@ -1,9 +1,11 @@
 package wanted.structure.Instagram_clone.global.dto;
 
+import lombok.Getter;
 import org.springframework.data.domain.Slice;
 
 import java.util.List;
 
+@Getter
 public class ListResult extends EmptyResult {
     private final List<Object> content;
     private final boolean isLast;
