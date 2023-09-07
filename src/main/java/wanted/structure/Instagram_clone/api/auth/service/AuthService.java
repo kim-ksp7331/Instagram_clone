@@ -33,18 +33,21 @@ public class AuthService {
     private final RedisUtils redisUtils;
 
     @Transactional
-    public void signUp(SignUpRequest request) {
+    public Long signUp(SignUpRequest request) {
         boolean exists = userRepository.existsByEmail(request.getEmail());
         if (exists) {
             throw new ApiException(ErrorCode.CONFLICT);
         }
+
         Long userId = userRepository.save(userMapper.dtoToEntity(request)).getId();
         authRepository.save(authMapper.dtoToEntity(userId, AuthCode.USER));
+
+        return userId;
     }
 
     @Transactional
     public VerifyMailResponse verifyMail(VerifyMailRequest request) {
-        String authNum = redisUtils.getData(RedisCode.AUTH_NUM.getCode()+request.getEmail());
+        String authNum = redisUtils.getData(RedisCode.AUTH_NUM.getCode() + request.getEmail());
         return VerifyMailResponse.builder().verify(authNum.equals(request.getAuthNum())).build();
     }
 

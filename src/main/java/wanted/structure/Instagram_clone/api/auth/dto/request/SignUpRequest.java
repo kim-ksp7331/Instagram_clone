@@ -4,12 +4,14 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class SignUpRequest {
 
     @NotBlank(message = "이메일은 필수 입력값입니다.")
