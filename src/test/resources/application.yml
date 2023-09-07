@@ -26,7 +26,3 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
-
-aws-s3:
-  access-key: ${S3_ACCESS_KEY}
-  secret-access-key: ${S3_SECRET_ACCESS_KEY}
