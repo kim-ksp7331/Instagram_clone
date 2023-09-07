@@ -1,6 +1,13 @@
 version: '3.8'
 
 services:
+  fcm:
+    container_name: instagram-clone-fcm-mock
+    platform: linux/amd64
+    image: andruxxxa/fcm-mock-server-go
+    ports:
+      - "4004:4004"
+
   cache:
     container_name: instagram-clone-cache
     platform: linux/amd64
