@@ -39,9 +39,9 @@ public class JwtProvider {
         return expiration.before(new Date());
     }
 
-    public String doGenerateToken(String username, long expire) {
+    public String doGenerateToken(String email, long expire) {
         Claims claims = Jwts.claims();
-        claims.put("username", username);
+        claims.put("email", email);
 
         long now = System.currentTimeMillis();
 
