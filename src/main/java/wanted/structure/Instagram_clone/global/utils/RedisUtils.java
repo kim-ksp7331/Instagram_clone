@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class RedisUtils {
 
+    public final long EXPIRE_PERIOD = 60L * 60L * 24L; // 1일
+
     private final StringRedisTemplate template;
 
     public String getData(String key) {

@@ -1,13 +1,23 @@
 package wanted.structure.Instagram_clone.api.user.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 import wanted.structure.Instagram_clone.api.auth.dto.request.SignUpRequest;
 import wanted.structure.Instagram_clone.api.user.entity.User;
 
 
-@Mapper(componentModel="spring")
-public interface UserMapper {
-    @Mapping(target = "id", ignore = true)
-    User dtoToEntity(SignUpRequest dto);
+@Component
+@RequiredArgsConstructor
+public class UserMapper {
+
+    private final PasswordEncoder passwordEncoder;
+
+    public User dtoToEntity(SignUpRequest dto) {
+        return User.builder()
+            .email(dto.getEmail())
+            .password(passwordEncoder.encode(dto.getPassword()))
+            .nickname(dto.getNickname())
+            .build();
+    }
 }

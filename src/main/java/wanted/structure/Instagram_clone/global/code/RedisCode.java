@@ -4,7 +4,9 @@ import lombok.Getter;
 
 @Getter
 public enum RedisCode {
-    AUTH_NUM("001","이메일 인증 코드");
+    AUTH_NUM("001","이메일 인증 코드"),
+
+    TOKEN("002", "리프레쉬 토큰");
     private final String code;
     private final String name;
 
