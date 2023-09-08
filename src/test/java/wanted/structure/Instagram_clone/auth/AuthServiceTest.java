@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import wanted.structure.Instagram_clone.api.auth.dto.request.SignUpRequest;
 import wanted.structure.Instagram_clone.api.auth.dto.request.VerifyMailRequest;
 import wanted.structure.Instagram_clone.api.auth.dto.response.VerifyMailResponse;
@@ -16,6 +17,7 @@ import wanted.structure.Instagram_clone.api.auth.entity.Auth;
 import wanted.structure.Instagram_clone.api.auth.mapper.AuthMapper;
 import wanted.structure.Instagram_clone.api.auth.repository.AuthRepository;
 import wanted.structure.Instagram_clone.api.auth.service.AuthService;
+import wanted.structure.Instagram_clone.api.auth.service.JwtProvider;
 import wanted.structure.Instagram_clone.api.user.entity.User;
 import wanted.structure.Instagram_clone.api.user.mapper.UserMapper;
 import wanted.structure.Instagram_clone.api.user.repository.UserRepository;
@@ -31,7 +33,12 @@ public class AuthServiceTest {
     private UserRepository userRepository;
 
     @Mock
+
     private AuthRepository authRepository;
+
+    @Mock
+    private RedisUtils redisUtils;
+
     @Mock
     private UserMapper userMapper;
 
@@ -39,7 +46,10 @@ public class AuthServiceTest {
     private AuthMapper authMapper;
 
     @Mock
-    private RedisUtils redisUtils;
+    private PasswordEncoder passwordEncoder;
+
+    @Mock
+    private JwtProvider jwtProvider;
 
     @InjectMocks
     private AuthService authService;
@@ -77,24 +87,39 @@ public class AuthServiceTest {
             .nickname("test_nickname")
             .build();
 
-        User user = User.builder().email("test1@test.com")
+        User user = User.builder()
+            .email("test1@test.com")
+            .password("test_password")
+            .nickname("test_nickname")
+            .build();
+
+        User save = User.builder()
+            .email("test1@test.com")
             .password("test_password")
             .nickname("test_nickname")
             .id(userId)
             .build();
 
-        Auth auth = Auth.builder().authId(authId).userId(userId).role(AuthCode.USER.getCode()).build();
+        Auth auth = Auth.builder()
+            .userId(userId)
+            .build();
+
+        Auth authSave = Auth.builder()
+            .authId(authId)
+            .userId(userId)
+            .build();
 
         given(userRepository.existsByEmail(request.getEmail())).willReturn(false);
-        given(userRepository.save(userMapper.dtoToEntity(request))).willReturn(user);
-        given(authRepository.save(authMapper.dtoToEntity(user.getId(), AuthCode.USER))).willReturn(auth);
+        given(userMapper.dtoToEntity(request)).willReturn(user);
+        given(userRepository.save(user)).willReturn(save);
+        given(authMapper.dtoToEntity(save.getId(), AuthCode.USER)).willReturn(auth);
+        given(authRepository.save(auth)).willReturn(authSave);
 
         //when
         Long testId = authService.signUp(request);
-        log.info("signUp testId - {}", testId);
 
         //then
-        Assertions.assertEquals(user.getId(), testId);
+        Assertions.assertEquals(userId, testId);
 
     }
 }
