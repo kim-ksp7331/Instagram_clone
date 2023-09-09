@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import wanted.structure.Instagram_clone.api.auth.dto.request.EmailRequest;
+import wanted.structure.Instagram_clone.api.auth.dto.request.SignInRequest;
 import wanted.structure.Instagram_clone.api.auth.dto.request.SignUpRequest;
 import wanted.structure.Instagram_clone.api.auth.dto.request.VerifyMailRequest;
+import wanted.structure.Instagram_clone.api.auth.dto.response.SignInResponse;
 import wanted.structure.Instagram_clone.api.auth.dto.response.VerifyMailResponse;
 import wanted.structure.Instagram_clone.api.auth.service.AuthService;
 import wanted.structure.Instagram_clone.api.auth.service.EmailService;
@@ -48,6 +50,13 @@ public class AuthController {
     public ResponseEntity<SingleResult> verifyMail(@RequestBody VerifyMailRequest verifyMailRequest) {
         VerifyMailResponse response = authService.verifyMail(verifyMailRequest);
         log.info("verifyMail code : {}, message : {}", HttpStatus.OK, HttpStatus.OK.getReasonPhrase());
+        return ResponseDto.of(HttpStatus.OK, HttpStatus.OK.getReasonPhrase(), response);
+    }
+
+    @PostMapping("/sign-in")
+    public ResponseEntity<SingleResult> signIn(@RequestBody SignInRequest signInRequest) {
+        SignInResponse response = authService.signIn(signInRequest);
+        log.info("signIn code : {}, message : {}", HttpStatus.OK, HttpStatus.OK.getReasonPhrase());
         return ResponseDto.of(HttpStatus.OK, HttpStatus.OK.getReasonPhrase(), response);
     }
 }

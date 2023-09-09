@@ -2,7 +2,6 @@ package wanted.structure.Instagram_clone.api.auth.service;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import java.util.Date;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,8 +30,6 @@ public class EmailService {
 
     private final RedisUtils redisUtils;
 
-    private final long expire_period = 1000L * 60L * 30; // 30분
-
     @Async
     public void sendMail(EmailRequest emailRequest, String type) {
         String authNum = createCode();
@@ -50,8 +47,7 @@ public class EmailService {
 
             log.info("code : {}, message : {}", HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase());
 
-            Date now = new Date();
-            redisUtils.setDataExpire(RedisCode.AUTH_NUM.getCode() + emailMessage.getTo(), authNum, expire_period);
+            redisUtils.setDataExpire(RedisCode.AUTH_NUM.getCode() + emailMessage.getTo(), authNum, redisUtils.EXPIRE_PERIOD / 24L * 2L); // 30분
         } catch (MessagingException e) {
             log.error(e.getMessage());
             log.info("code : {}, message : {}", HttpStatus.INTERNAL_SERVER_ERROR.value(),
