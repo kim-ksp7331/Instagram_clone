@@ -1,5 +1,6 @@
 package wanted.structure.Instagram_clone.post.controller;
 
+import jakarta.servlet.http.Part;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
 import org.mockito.Mockito;
@@ -11,12 +12,15 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.HttpMethod;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.mock.web.MockPart;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import wanted.structure.Instagram_clone.post.dto.request.CreatePostRequest;
 import wanted.structure.Instagram_clone.post.dto.response.PostResponse;
 import wanted.structure.Instagram_clone.post.service.PostService;
 
+
+import java.nio.charset.StandardCharsets;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -34,12 +38,14 @@ class PostControllerTest {
     void createPost() throws Exception {
         // given
         String name = "file";
+        String text = "abcd";
         MockMultipartFile file = new MockMultipartFile(name, new byte[0]);
+        Part part = new MockPart("text", text.getBytes(StandardCharsets.UTF_8));
         Long id = 2L;
         String mediaUrl = "/image.png";
 
         String urlTemplate = "/post";
-        PostResponse response = PostResponse.builder().id(id).mediaUrl(mediaUrl).build();
+        PostResponse response = PostResponse.builder().id(id).mediaUrl(mediaUrl).text(text).build();
 
         BDDMockito.given(postService.createPost(Mockito.any(CreatePostRequest.class))).willReturn(response);
 
@@ -47,12 +53,15 @@ class PostControllerTest {
         ResultActions actions = mockMvc.perform(
                 multipart(HttpMethod.POST, urlTemplate)
                         .file(file)
+                        .part(part)
+
         );
 
         // then
         actions
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.content.id").value(id))
-                .andExpect(jsonPath("$.content.mediaUrl").value(mediaUrl));
+                .andExpect(jsonPath("$.content.mediaUrl").value(mediaUrl))
+                .andExpect(jsonPath("$.content.text").value(text));
     }
 }

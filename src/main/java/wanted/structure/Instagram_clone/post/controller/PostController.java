@@ -23,8 +23,9 @@ import wanted.structure.Instagram_clone.post.service.PostService;
 public class PostController {
     private final PostService postService;
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<SingleResult> createPost(@RequestPart MultipartFile file) {
-        CreatePostRequest request = CreatePostRequest.builder().file(file).build();
+    public ResponseEntity<SingleResult> createPost(@RequestPart MultipartFile file,
+                                                   @RequestPart(required = false) String text) {
+        CreatePostRequest request = CreatePostRequest.builder().file(file).text(text).build();
         PostResponse response = postService.createPost(request);
         return ResponseDto.of(HttpStatus.CREATED, response);
     }

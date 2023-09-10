@@ -35,8 +35,10 @@ class PostServiceTest {
         MockMultipartFile file = new MockMultipartFile(name, new byte[]{});
         Long id = 3L;
         String mediaUrl = "/image.png";
-        CreatePostRequest request = CreatePostRequest.builder().file(file).build();
-        PostResponse response = PostResponse.builder().id(id).mediaUrl(mediaUrl).build();
+        String text = "abcd";
+
+        CreatePostRequest request = CreatePostRequest.builder().file(file).text(text).build();
+        PostResponse response = PostResponse.builder().id(id).mediaUrl(mediaUrl).text(text).build();
 
         BDDMockito.given(storageService.store(Mockito.any(MultipartFile.class), Mockito.anyString())).willReturn("");
         BDDMockito.given(postRepository.save(Mockito.any(Post.class))).willReturn(Post.builder().build());
@@ -48,5 +50,6 @@ class PostServiceTest {
         // then
         assertThat(result.getId()).isEqualTo(id);
         assertThat(result.getMediaUrl()).isEqualTo(mediaUrl);
+        assertThat(result.getText()).isEqualTo(text);
     }
 }

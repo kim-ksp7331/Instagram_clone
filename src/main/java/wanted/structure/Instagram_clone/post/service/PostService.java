@@ -20,7 +20,8 @@ public class PostService {
 
     public PostResponse createPost(CreatePostRequest request) {
         String key = storageService.store(request.getFile(), "post");
-        Post post = Post.builder().mediaKey(key).build();
+        Post post = Post.builder().mediaKey(key).text(request.getText()).build();
+        post.setHashTags(post.getText());
         return postMapper.entityToDto(postRepository.save(post));
     }
 }
