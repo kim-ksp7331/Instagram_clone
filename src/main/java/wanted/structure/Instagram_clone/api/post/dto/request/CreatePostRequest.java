@@ -1,4 +1,4 @@
-package wanted.structure.Instagram_clone.post.dto.request;
+package wanted.structure.Instagram_clone.api.post.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

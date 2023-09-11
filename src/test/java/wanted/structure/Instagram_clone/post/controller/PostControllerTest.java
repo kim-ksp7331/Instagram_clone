@@ -11,13 +11,16 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.mock.web.MockPart;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import wanted.structure.Instagram_clone.post.dto.request.CreatePostRequest;
-import wanted.structure.Instagram_clone.post.dto.response.PostResponse;
-import wanted.structure.Instagram_clone.post.service.PostService;
+import wanted.structure.Instagram_clone.api.post.controller.PostController;
+import wanted.structure.Instagram_clone.api.post.dto.request.CreatePostRequest;
+import wanted.structure.Instagram_clone.api.post.dto.response.PostResponse;
+import wanted.structure.Instagram_clone.api.post.service.PostQueryService;
+import wanted.structure.Instagram_clone.api.post.service.PostService;
 
 
 import java.nio.charset.StandardCharsets;
@@ -33,6 +36,8 @@ class PostControllerTest {
     private MockMvc mockMvc;
     @MockBean
     private PostService postService;
+    @MockBean
+    private PostQueryService postQueryService;
 
     @Test
     void createPost() throws Exception {
@@ -61,6 +66,31 @@ class PostControllerTest {
         actions
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.content.id").value(id))
+                .andExpect(jsonPath("$.content.mediaUrl").value(mediaUrl))
+                .andExpect(jsonPath("$.content.text").value(text));
+    }
+
+    @Test
+    void getPost() throws Exception {
+        // given
+        Long postId = 1L;
+        String mediaUrl = "/image.png";
+        String text = "abcd";
+        PostResponse response = PostResponse.builder().id(postId).mediaUrl(mediaUrl).text(text).build();
+
+        BDDMockito.given(postQueryService.findPost(Mockito.anyLong())).willReturn(response);
+        String urlTemplate = "/post/{post-id}";
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                get(urlTemplate, postId)
+                        .accept(MediaType.APPLICATION_JSON)
+        );
+
+        // then
+        actions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content.id").value(postId))
                 .andExpect(jsonPath("$.content.mediaUrl").value(mediaUrl))
                 .andExpect(jsonPath("$.content.text").value(text));
     }

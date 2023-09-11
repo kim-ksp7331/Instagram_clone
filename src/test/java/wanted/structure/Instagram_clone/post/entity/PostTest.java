@@ -1,10 +1,9 @@
 package wanted.structure.Instagram_clone.post.entity;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import wanted.structure.Instagram_clone.api.post.entity.Post;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class PostTest {
 

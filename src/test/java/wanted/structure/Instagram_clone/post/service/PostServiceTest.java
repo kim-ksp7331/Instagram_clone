@@ -9,12 +9,13 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
+import wanted.structure.Instagram_clone.api.post.service.PostService;
 import wanted.structure.Instagram_clone.global.media.StorageService;
-import wanted.structure.Instagram_clone.post.dto.request.CreatePostRequest;
-import wanted.structure.Instagram_clone.post.dto.response.PostResponse;
-import wanted.structure.Instagram_clone.post.entity.Post;
-import wanted.structure.Instagram_clone.post.mapper.PostMapper;
-import wanted.structure.Instagram_clone.post.repository.PostRepository;
+import wanted.structure.Instagram_clone.api.post.dto.request.CreatePostRequest;
+import wanted.structure.Instagram_clone.api.post.dto.response.PostResponse;
+import wanted.structure.Instagram_clone.api.post.entity.Post;
+import wanted.structure.Instagram_clone.api.post.mapper.PostMapper;
+import wanted.structure.Instagram_clone.api.post.repository.PostRepository;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -51,5 +52,6 @@ class PostServiceTest {
         assertThat(result.getId()).isEqualTo(id);
         assertThat(result.getMediaUrl()).isEqualTo(mediaUrl);
         assertThat(result.getText()).isEqualTo(text);
+
     }
 }

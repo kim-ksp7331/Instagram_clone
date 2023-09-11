@@ -1,14 +1,14 @@
-package wanted.structure.Instagram_clone.post.service;
+package wanted.structure.Instagram_clone.api.post.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wanted.structure.Instagram_clone.api.post.dto.request.CreatePostRequest;
+import wanted.structure.Instagram_clone.api.post.dto.response.PostResponse;
+import wanted.structure.Instagram_clone.api.post.mapper.PostMapper;
 import wanted.structure.Instagram_clone.global.media.StorageService;
-import wanted.structure.Instagram_clone.post.dto.request.CreatePostRequest;
-import wanted.structure.Instagram_clone.post.dto.response.PostResponse;
-import wanted.structure.Instagram_clone.post.entity.Post;
-import wanted.structure.Instagram_clone.post.mapper.PostMapper;
-import wanted.structure.Instagram_clone.post.repository.PostRepository;
+import wanted.structure.Instagram_clone.api.post.entity.Post;
+import wanted.structure.Instagram_clone.api.post.repository.PostRepository;
 
 @Service
 @Transactional
