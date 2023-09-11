@@ -35,7 +35,7 @@ public class PostCustomRepositoryImpl extends QuerydslRepositorySupport implemen
     @Override
     public Page<Post> findPage(Pageable pageable) {
         JPAQuery<Post> query = jpaQueryFactory.selectFrom(post).leftJoin(post.hashTags);
-        Long count = jpaQueryFactory.select(post.count()).from(post).fetchCount();
+        Long count = jpaQueryFactory.select(post.count()).from(post).fetchOne();
 
         List<Post> list = getQuerydsl().applyPagination(pageable, query).fetch();
         return new PageImpl<>(list, pageable, count);
