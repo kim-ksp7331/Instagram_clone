@@ -2,6 +2,8 @@ package wanted.structure.Instagram_clone.api.post.controller;
 
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import wanted.structure.Instagram_clone.api.post.dto.request.CreatePostRequest;
 import wanted.structure.Instagram_clone.api.post.dto.response.PostResponse;
 import wanted.structure.Instagram_clone.api.post.service.PostQueryService;
+import wanted.structure.Instagram_clone.global.dto.ListResult;
 import wanted.structure.Instagram_clone.global.dto.ResponseDto;
 import wanted.structure.Instagram_clone.global.dto.SingleResult;
 import wanted.structure.Instagram_clone.api.post.service.PostService;
@@ -34,5 +37,12 @@ public class PostController {
     public ResponseEntity<SingleResult> getPost(@Positive @PathVariable("post-id") Long postId) {
         PostResponse response = postQueryService.findPost(postId);
         return ResponseDto.of(HttpStatus.OK, response);
+    }
+
+    @GetMapping
+    public ResponseEntity<ListResult<PostResponse>> getPostPagination(@Positive @RequestParam(defaultValue = "1") int page,
+                                                                      @Positive @RequestParam(defaultValue = "10") int size) {
+        Page<PostResponse> responses = postQueryService.findPostPage(page, size);
+        return ResponseDto.of(HttpStatus.OK, responses);
     }
 }
