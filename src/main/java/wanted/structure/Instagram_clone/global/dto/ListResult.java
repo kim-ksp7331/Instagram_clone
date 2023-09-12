@@ -6,13 +6,13 @@ import org.springframework.data.domain.Slice;
 import java.util.List;
 
 @Getter
-public class ListResult extends EmptyResult {
-    private final List<Object> content;
+public class ListResult<T> extends EmptyResult {
+    private final List<T> content;
     private final boolean isLast;
     private final int size;
     private final int number;
 
-    public ListResult(Slice<Object> slices) {
+    public ListResult(Slice<T> slices) {
         super();
         this.content = slices.getContent();
         this.isLast = slices.isLast();
@@ -20,7 +20,7 @@ public class ListResult extends EmptyResult {
         this.number = slices.getNumber();
     }
 
-    public ListResult(String message, Slice<Object> slices) {
+    public ListResult(String message, Slice<T> slices) {
         super(message);
         this.content = slices.getContent();
         this.isLast = slices.isLast();

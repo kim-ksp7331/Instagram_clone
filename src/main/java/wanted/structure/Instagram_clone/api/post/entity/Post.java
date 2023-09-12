@@ -1,4 +1,4 @@
-package wanted.structure.Instagram_clone.post.entity;
+package wanted.structure.Instagram_clone.api.post.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

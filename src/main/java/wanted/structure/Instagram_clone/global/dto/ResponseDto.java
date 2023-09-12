@@ -20,12 +20,12 @@ public class ResponseDto {
         return ResponseEntity.status(status).body(new SingleResult(message, content));
     }
 
-    public static ResponseEntity<ListResult> of(HttpStatus status, Slice<Object> slices) {
-        return ResponseEntity.status(status).body(new ListResult(slices));
+    public static <T> ResponseEntity<ListResult<T>> of(HttpStatus status, Slice<T> slices) {
+        return ResponseEntity.status(status).body(new ListResult<>(slices));
     }
 
-    public static ResponseEntity<ListResult> of(HttpStatus status, String message, Slice<Object> slices) {
-        return ResponseEntity.status(status).body(new ListResult(message, slices));
+    public static <T> ResponseEntity<ListResult<T>> of(HttpStatus status, String message, Slice<T> slices) {
+        return ResponseEntity.status(status).body(new ListResult<>(message, slices));
     }
 
 }
