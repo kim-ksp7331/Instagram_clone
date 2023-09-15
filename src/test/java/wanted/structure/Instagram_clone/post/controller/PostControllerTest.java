@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import wanted.structure.Instagram_clone.api.post.controller.PostController;
 import wanted.structure.Instagram_clone.api.post.dto.request.CreatePostRequest;
+import wanted.structure.Instagram_clone.api.post.dto.request.UpdatePostRequest;
 import wanted.structure.Instagram_clone.api.post.dto.response.PostResponse;
 import wanted.structure.Instagram_clone.api.post.service.PostQueryService;
 import wanted.structure.Instagram_clone.api.post.service.PostService;
@@ -141,5 +142,36 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.content[1].mediaUrl").value(mediaUrl1))
                 .andExpect(jsonPath("$.content[1].text").value(text1))
                 .andExpect(jsonPath("$.content[1].hashTags").value(contains(hashTags1.toArray(String[]::new))));
+    }
+
+    @Test
+    void updatePost() throws Exception {
+        // given
+        String name = "file";
+        String text = "abcd";
+        MockMultipartFile file = new MockMultipartFile(name, new byte[0]);
+        Part part = new MockPart("text", text.getBytes(StandardCharsets.UTF_8));
+        Long id = 2L;
+        String mediaUrl = "/image.png";
+
+        String urlTemplate = "/post/{post-id}";
+        PostResponse response = PostResponse.builder().id(id).mediaUrl(mediaUrl).text(text).build();
+
+        BDDMockito.given(postService.updatePost(Mockito.any(UpdatePostRequest.class))).willReturn(response);
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                multipart(HttpMethod.PATCH, urlTemplate, id)
+                        .file(file)
+                        .part(part)
+
+        );
+
+        // then
+        actions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content.id").value(id))
+                .andExpect(jsonPath("$.content.mediaUrl").value(mediaUrl))
+                .andExpect(jsonPath("$.content.text").value(text));
     }
 }

@@ -32,7 +32,7 @@ public class PostQueryService {
         return postMapper.entityPageToDtoPage(postPage);
     }
 
-    Post findVefifiedPost(Long id) {
+    protected Post findVefifiedPost(Long id) {
         return postCustomRepository.findById(id).orElseThrow(() -> new ApiException(ErrorCode.BAD_REQUEST));
     }
 }

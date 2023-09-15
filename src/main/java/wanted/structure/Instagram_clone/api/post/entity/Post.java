@@ -2,6 +2,7 @@ package wanted.structure.Instagram_clone.api.post.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import wanted.structure.Instagram_clone.api.post.dto.request.UpdatePostRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,5 +48,16 @@ public class Post {
     }
     private void addHashTag(String hashTag) {
         hashTags.add(hashTag);
+    }
+
+    public void update(UpdatePostRequest request, String mediaKey, boolean isFileEmpty) {
+        String text = request.getText();
+        if (text != null) {
+            this.text = text;
+            setHashTags(text);
+        }
+        if (mediaKey != null || isFileEmpty) {
+            this.mediaKey = mediaKey;
+        }
     }
 }
