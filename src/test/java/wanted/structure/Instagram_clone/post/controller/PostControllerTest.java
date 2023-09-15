@@ -174,4 +174,20 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.content.mediaUrl").value(mediaUrl))
                 .andExpect(jsonPath("$.content.text").value(text));
     }
+
+    @Test
+    void deletePost() throws Exception {
+        // given
+        Long postId = 1L;
+        String urlTemplate = "/post/{post-id}";
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                delete(urlTemplate, postId)
+        );
+
+        // then
+        actions
+                .andExpect(status().isNoContent());
+    }
 }

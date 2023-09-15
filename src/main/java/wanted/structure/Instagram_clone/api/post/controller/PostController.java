@@ -14,6 +14,7 @@ import wanted.structure.Instagram_clone.api.post.dto.request.CreatePostRequest;
 import wanted.structure.Instagram_clone.api.post.dto.request.UpdatePostRequest;
 import wanted.structure.Instagram_clone.api.post.dto.response.PostResponse;
 import wanted.structure.Instagram_clone.api.post.service.PostQueryService;
+import wanted.structure.Instagram_clone.global.dto.EmptyResult;
 import wanted.structure.Instagram_clone.global.dto.ListResult;
 import wanted.structure.Instagram_clone.global.dto.ResponseDto;
 import wanted.structure.Instagram_clone.global.dto.SingleResult;
@@ -54,5 +55,11 @@ public class PostController {
         UpdatePostRequest request = UpdatePostRequest.builder().id(postId).file(file).text(text).build();
         PostResponse response = postService.updatePost(request);
         return ResponseDto.of(HttpStatus.OK, response);
+    }
+
+    @DeleteMapping("/{post-id}")
+    public ResponseEntity<EmptyResult> deletePost(@Positive @PathVariable("post-id") Long postId) {
+        postService.deletePost(postId);
+        return ResponseDto.of(HttpStatus.NO_CONTENT);
     }
 }

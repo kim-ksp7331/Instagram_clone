@@ -35,4 +35,10 @@ public class PostService {
         post.update(request, key, isFileEmpty);
         return postMapper.entityToDto(post);
     }
+
+    public void deletePost(Long id) {
+        Post post = postQueryService.findVefifiedPost(id);
+        storageService.delete(post.getMediaKey());
+        postRepository.delete(post);
+    }
 }
