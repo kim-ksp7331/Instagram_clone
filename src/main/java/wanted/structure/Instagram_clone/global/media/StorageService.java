@@ -29,4 +29,6 @@ public interface StorageService {
      */
     @Named("getPreSignedUrl")
     String getPreSignedUrl(String key);
+
+    boolean isEmptyFile(MultipartFile file);
 }
